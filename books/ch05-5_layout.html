@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ch05-5_layout.html</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue-router@3.6.5/dist/vue-router.min.js"></script>
+        <style>
+            div {
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <h3>Vue Named view</h3>
+        <div id="app">
+            <router-view name="header"></router-view>
+            <!-- components:{header<- 이 헤더임}-->
+            <router-view></router-view>
+            <router-view name="footer"></router-view>
+        </div>
+        <script>
+            //1.component
+            const Body = { template: '<div><h1>Body</h1></div>' };
+            const Header = { template: '<div><h1>Header</h1></div>' };
+            const Footer = { template: '<div><h1>Footer</h1></div>' };
+
+            //2. 라우터
+            const router = new VueRouter({
+                routes: [
+                    {
+                        path: '/',
+                        components: {
+                            //하나의 패스에 컴포넌트가 여러개 사용되어 이름으로 구별
+                            default: Body, //default: 이름이 없을 때
+                            header: Header, //routes에서 준 이름: header
+                            footer: Footer,
+                        },
+                    },
+                ],
+            });
+
+            //3. 뷰 인스턴스
+            const app = new Vue({
+                el: '#app',
+                router: router,
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ch02-3_virtual_el.html</title>
+        <style>
+            .content::after {
+                content: '-';
+            }
+            .content::before {
+                content: '-';
+            }
+            button.coupon::before {
+                display: block;
+                content: attr(data-username) '을 위한 쿠폰입니다.';
+                /* content: url(''); 로 이미지도 넣을 수 있다. */
+                padding: 10px 20px;
+                color: orange;
+            }
+        </style>
+    </head>
+    <body>
+        <h3>가상요소</h3>
+        <div class="content">가상요소 위치</div>
+        <button type="button" class="coupon" data-username="사용자이름"></button>
+    </body>
+</html>

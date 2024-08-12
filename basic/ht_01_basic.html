@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ht_01_basic.html</title>
+        <style>
+            /* css단위는 요소 단위로 지정 */
+            /* property : value */
+            /* selector는 override여서, 궁서체는 유지됨을 알 수 있다. */
+            /* css는 브라우저에 내장된 요소단위의 랜더링 재정의 */
+            h1 {
+                font-size: 50px;
+                font-family: '궁서체';
+                color: blueviolet;
+            }
+            /* class속성이용, 요소선택 */
+            .title {
+                font-size: 60px;
+                color: blue;
+            }
+            /* id속성이용, 요소선택 */
+            #title {
+                font-size: 30px;
+                color: brown;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 class="title">HTML Basic</h1>
+        <h1>HTML Basic</h1>
+        <h1 class="title">HTML Basic</h1>
+        <h1 id="title">HTML Basic</h1>
+        <h1>HTML Basic</h1>
+        <font size="7" color="green" face="궁서체">HTML Basic</font><br />
+        <button type="button" onclick="changeContent()">내용 바꾸기</button>
+        <!-- event 속성 -->
+
+        <script>
+            function changeContent(args) {
+                document.getElementById('title').innerText = 'HTML 기초';
+            }
+            // changeContent();
+        </script>
+    </body>
+</html>

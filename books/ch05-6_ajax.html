@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ch05-6_ajax.html</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios@1.7.3/dist/axios.min.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <ol>
+                <li v-for="todo in todos">{{todo.todo}}</li>
+            </ol>
+        </div>
+        <script>
+            const app = new Vue({
+                el: '#app',
+                data: {
+                    todos: [],
+                },
+                mounted() {
+                    //화면이 딱 출력됐을때
+                    //mounted는 조금 느리게 느껴짐으로 mounted말고, 버튼 클릭 이벤트를 통해 되게 하는게 좋다.
+                    //mounted는 사이즈가 작을 때 사용하자
+                    axios.get('datas.json').then(
+                        function (res) {
+                            console.log(res.data); //object자체를 갖고옴
+                            console.log(res.data.todos); //json의 1, 2, 3을 한개씩 가져옴
+                            this.todos = res.data.todos; //this = Vue인스턴스여야하는데 여기서 this를 하면 mounted함수가 되기 때문에, bind를 꼭 넣어야함
+                        }.bind(this),
+                    );
+                },
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>js_08_ajax.html</title>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios@1.7.3/dist/axios.min.js"></script>
+    </head>
+    <body>
+        <h3>Ajax(Asynchronous Javascript and XML)</h3>
+        <div>XMLHttpRequest</div>
+        <script>
+            let result = '';
+            $.get('msg.json', {}, function (data) {
+                result = data;
+                console.log('1', result);
+            });
+            console.log('2', result);
+
+            // promise dp
+            let result2 = '';
+            $.get('msg.json', {}, function () {
+                console.log('대기중');
+            })
+                .done(function (data) {
+                    //응답이 오면
+                    result2 = data;
+                    console.log('3', result2);
+                })
+                .done(function () {
+                    console.log('4.', result2);
+                })
+                .fail(function (data) {
+                    console.log('에러', data);
+                });
+
+            //fetch : 표준방법 - 방법들 중 느림 -그래서 jquery나 axio를 ajax에서 쓰면 됨
+            //jquery에서는 import가 안되는 문제가 있을 수 있어서 axios를 많이 쓴다.
+            fetch('msg.json', {
+                method: 'GET',
+            })
+                .then((response) => {
+                    if (response.ok) return response.json(); //응답이 성공하면 response를 json으로 바꿔서 다음단계로 넘김
+                })
+                .then((data) => {
+                    console.log('5', data);
+                })
+                .catch(function (err) {
+                    console.log(err.message);
+                });
+
+            //axios
+            axios
+                .get('msg.json', {})
+                .then(function (res) {
+                    console.log('6', res);
+                })
+                .catch(function (err) {
+                    console.log('에러', err);
+                });
+
+            axios({ method: 'get', url: 'msg.json', data: {} })
+                .then(function (res) {
+                    console.log('7', res.data); //다 필요없고 data만 필요해
+                })
+                .catch(function (err) {
+                    console.log('에러', err);
+                });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ch05-1_vue_intro.html</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.min.js"></script>
+    </head>
+    <body>
+        <div id="dom"></div>
+        <input type="text" oninput="handleDomInput(this.value)" />
+        <script>
+            //model
+            const model = {
+                message: 'Hello Javascript',
+            };
+
+            //view
+            function handleDomChange() {
+                document.getElementById('dom').innerText = model.message;
+            }
+
+            //controller
+            function handleDomInput(msg) {
+                model.message = msg;
+                handleDomChange(); //화면 갱신
+            }
+
+            handleDomChange();
+        </script>
+
+        <div id="app1">
+            <div>{{message}}</div>
+            <input type="text" v-model="message" />
+            <!-- model만 세팅하면 나옴 -->
+        </div>
+
+        <script>
+            //1. vue instance생성 - 하나의 html에 여러개 만들 수 있음
+            // el: vue과 관리할 element
+            const app1 = new Vue({
+                el: '#app1',
+                data: {
+                    message: 'Hello Vue.js',
+                },
+                //==life cycle hooks
+                beforeCreate() {
+                    //(DOM이 생성되기 전이라)DOM처리 불가
+                    console.log('beforeCreate');
+                },
+                created() {
+                    // DOM처리 불가, data, event처리가 가능
+                    console.log('created');
+                },
+                beforeMount() {
+                    // 렌더링 일어나기 전
+                    //CF) 렌더링: 화면 출력?
+                    console.log('beforeMount');
+                },
+                mounted() {
+                    //렌더링 완료된 후, DOM 접근 가능
+                    console.log('mounted');
+                },
+                beforeUpdate() {
+                    //리렌더링이 일어나기 전(리랜더링: 화면갱신)
+                    //패스워드 치면 데이터랑 비교하고 그런거 말하는 거임(?)
+                    console.log('beforeUpdate');
+                },
+                updated() {
+                    //리렌더링이 일어난 뒤
+                    console.log('updated');
+                },
+                beforeDestroy() {
+                    //인스턴스 제거전
+                    console.log('beforeDestroy');
+                },
+                destroyed() {
+                    //인스턴스 제거 후
+                    console.log('destroyed');
+                },
+            });
+        </script>
+    </body>
+</html>

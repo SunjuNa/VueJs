@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ch05-4_router.html</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue-router@3.6.5/dist/vue-router.min.js"></script>
+    </head>
+    <body>
+        <h3>뷰 라우터(Vue Router)</h3>
+        <!-- 라우터:  component(?) 선택 -->
+        <!-- 라우터 : cache로 저장 -->
+        <h4>라우터 기본</h4>
+        <!-- 출력할 컴포넌트의 조건을 경로(URI)를 이용하여 지정 -->
+        <div id="app1">
+            <p>
+                <router-link to="/page1">Page1 컴포넌트</router-link>
+                <!--클릭시 url도 바뀜, 페이지 이동 없이 뭔가 갱신하고 싶다=router쓰기 -->
+                <router-link to="/page2/홍길동">Page2 컴포넌트</router-link>
+            </p>
+            <router-view></router-view>
+            <!--router-view에서 출력됨-->
+        </div>
+        <script>
+            //1.컴포넌트 정의
+            const compo1 = {
+                template: '<h3>Page1 !!!</h3>',
+            };
+
+            const compo2 = {
+                props: ['user'],
+                template: `<div><h3>Page2 !!! {{user}}</h3>
+                    <router-link to="/page1"><button type="button">페이지 1</button></router-link>
+                    </div>`,
+            };
+
+            //2. 뷰라우터 생성
+            const router = new VueRouter({
+                routes: [
+                    { path: '/page1', component: compo1 }, //이러면 뷰 인스턴스에 component를 등록 안해도 됨
+                    { path: '/page2/:user', component: compo2, props: true }, //매개변수를 이용해 받고 싶을 때 :props + props:true 를 사용하면 됨
+                ],
+            });
+
+            //3. 뷰 인스턴스 등록
+            const app1 = new Vue({
+                el: '#app1',
+                router: router, //2번째 라우터가 뷰라우터임
+            });
+        </script>
+
+        <hr />
+
+        <h4>라우터 중첩</h4>
+        <div id="app2">
+            <p>
+                <router-link to="/user">회원페이지</router-link>
+                <router-link to="/user/info">회원정보</router-link>
+                <router-link to="/user/posts">회원쓴글</router-link>
+            </p>
+            <router-view></router-view>
+            <!--부모것이 보임 -->
+        </div>
+        <script>
+            //01. component
+            const User = {
+                template: `
+                <div>
+                    <h2>User Page</h2>
+                    <router-view /> <!--자식 outlet(=자식것이 보임) --> 
+                </div>
+                `,
+            };
+
+            const UserInfo = {
+                template: '<h3>회원정보!!!!</h3>',
+            };
+
+            const UserPost = {
+                template: '<h3>등록한 글들!!!</h3>',
+            };
+
+            //02. router
+            const app2_router = new VueRouter({
+                routes: [
+                    {
+                        path: '/user',
+                        component: User, //user가 갖고 있는 router-view에 보이게 됨
+                        children: [
+                            { path: 'posts', component: UserPost },
+                            { path: 'info', component: UserInfo },
+                        ],
+                    },
+                ],
+            });
+
+            const app2 = new Vue({
+                el: '#app2',
+                router: app2_router,
+            });
+        </script>
+    </body>
+</html>

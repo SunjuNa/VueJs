@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>js_03_scope.html</title>
+    </head>
+    <body>
+        <script>
+            //this의 범위
+            var name = '가'; //window객체의 property로 등록
+            let name1 = 'A'; //변수
+
+            console.log(name, name1);
+            console.log(this.name, this.name1); //그래서 var는 this가 가능, 여기서 this=window
+            console.log(window.name, window.name1); //window(객체) <- 브라우저가 만듬
+
+            test(); //선언 전에 실행해도 오류가 안생김 : 호이스팅(hoisting)이라고 함
+            function test() {
+                var name = '나';
+                console.log(name); //나 - 함수내에서 var를 선언하면 window객체의 property로 설정되지 않음
+                // 보통 가장 가까운 변수가 출력됨(렉시컬이라고 한다.)
+                console.log(this.name); //가 //this: 함수의 한단계 위를 찾음
+            }
+            // test();
+            window.test();
+            // script <-> script: 전역공간이라 함(전역변수할때 그 전역을 말하는게 맞음)
+            // 전역공간에 선언된 건 변수(var), 메소드(function)라고 함(함수가 아니라 메소드)
+
+            let test2 = {
+                name: '다',
+                test: function () {
+                    var name = '라';
+                    console.log(name); //라
+                    console.log(this.name); //다
+                    // console.log(window.name); //가 - 이렇게 출력하는건 권장하지 않음
+                }.bind(this), //this = > test2의 한칸 위 // bind(this) : this를 test위의 것으로 변경하라
+                //bind는 함수의 내장 메소드임
+            };
+            test2.test(); //js파일에서는 context객체<-> window객체
+        </script>
+    </body>
+</html>

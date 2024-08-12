@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ch05-7_observer.html</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.min.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <h3>computed 속성</h3>
+            <p>원본 메세지: {{message}}</p>
+            <p>역순 메세지: {{reversedMessage}}</p>
+            <p>역순 메세지: {{reverseMessage2()}}</p>
+            <p><input type="text" v-model="message" /></p>
+
+            <p>이메일: "{{email_address}}, {{email_host}}, {{email}}"</p>
+        </div>
+        <script>
+            const app = new Vue({
+                el: '#app',
+                data: {
+                    message: '안녕하세요.',
+                    email_host: 'naver.com',
+                    email_address: 'abcd',
+                },
+                // 데이터 원본을 사용하는게 불편하므로 사용하는게 computed속성
+                computed: {
+                    //getter property
+                    reversedMessage: function () {
+                        return this.message.split('').reverse().join('');
+                    },
+                    email: {
+                        //실제로 자주 쓰는 형태
+                        get: function () {
+                            return `${this.email_address}@${this.email_host}`;
+                        },
+                        set: function (newValue) {
+                            const emails = newValue.split('@');
+                            this.email_address = emails[0];
+                            this.email_host = emails[1];
+                        },
+                    },
+                },
+
+                methods: {
+                    reverseMessage2: function () {
+                        return this.message.split('').reverse().join('');
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>

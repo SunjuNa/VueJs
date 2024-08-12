@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ch05-3_component.html</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.min.js"></script>
+        <style>
+            div {
+                margin: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <h3>Component</h3>
+        <h4>전역, 지역 컴포넌트</h4>
+        <div id="app1">
+            <global-component></global-component>
+            <local-component></local-component>
+        </div>
+        <div id="app2">
+            <global-component></global-component>
+            <local-component></local-component>
+            <!--출력은 안되지만, 오류가 안생김.... 주의.... -->
+        </div>
+
+        <script>
+            //전역 컴포넌트
+            //관례상 두단어 -로 이름지음, 관례상 소문자로 다 씀(=캐밥표기법)
+            Vue.component('global-component', {
+                template: '<div>전역 Hello Vue.js</div>',
+            }); //vue에 등록
+
+            //지역컴포넌트
+            //instance에 등록필요
+            const component = {
+                //변수선언 + template속성사용
+                template: '<div>지역 Hello Vue.js</div>',
+            };
+
+            const app1 = new Vue({
+                el: '#app1',
+                data: {},
+                components: {
+                    //지역component는 반드시 이렇게 등록을 해야한다.
+                    'local-component': component,
+                },
+            });
+
+            const app2 = new Vue({
+                el: '#app2',
+            });
+        </script>
+
+        <h4>Scope</h4>
+        <div id="app3">
+            <app3-compo1></app3-compo1>
+            <app3-compo2></app3-compo2>
+            <!-- 자식 -> 자식 으로는 data를 받을 순 없고, 자식은 부모를 통해서만 data를 받을 수 있음 -->
+            <!-- 따라서 app3-compo2의 data는 출력되지 않음  -->
+        </div>
+
+        <script>
+            const compo1 = {
+                template: '<div>지역 컴포넌트1: {{num}}</div>',
+                data: function () {
+                    //요즘 이 방법도 많이 씀, data : {num: 100}과 같음
+                    return {
+                        num: 100,
+                    };
+                },
+            };
+
+            const compo2 = {
+                template: '<div>지역 컴포넌트2: {{num}}</div>',
+                data: function () {
+                    return {
+                        num: compo1.data.num,
+                    };
+                },
+            };
+
+            const app3 = new Vue({
+                el: '#app3',
+                components: {
+                    //vue인스턴스에 등록
+                    'app3-compo1': compo1, //app3-compo1은 vue인스턴스에서 만든 이름
+                    'app3-compo2': compo2,
+                },
+            });
+        </script>
+
+        <h4>통신(부모 -> 자식)</h4>
+        <div id="app4">
+            <app4-compo1 v-bind:user="user_name"></app4-compo1>
+        </div>
+        <script>
+            /* 통신(부모(data를 갖고 있음, app4) -> 자식: props. 단방향, 읽기전용)  */
+            Vue.component('app4-compo1', {
+                props: ['user'],
+                template: '<div>{{user}}님 안녕하세요!!!</div>',
+            });
+
+            const app4 = new Vue({
+                el: '#app4',
+                data: {
+                    user_name: '홍길동',
+                },
+            });
+        </script>
+
+        <hr />
+
+        <h4>통신(자식 -> 부모)</h4>
+        <div id="app5">
+            <!-- 02. 부모에서 자식이 보낼 시점을 이벤트로 확인, callback(event handler로 처리) -->
+            <app5-compo1 v-bind:user="user_name" v-on:on-send="receive"></app5-compo1>
+        </div>
+        <script>
+            Vue.component('app5-compo1', {
+                props: ['user'], //속성을 여러개 받기 위해 배열로 받음
+                template: '<div v-on:click="handleClick()">{{user}}님 안녕하세요</div>',
+                methods: {
+                    //handleClick은 여기 Vue.component안에서만 쓸 수 있음
+                    handleClick: function () {
+                        //부모에게 보내주는 게 힘들기 때문에 이벤트를 이용함
+                        //01. 자식에서 부모에게 데이터를 보낸다는 시점을 알려주는 이벤트 등록, $emit에 등록
+                        this.$emit('on-send', this.user); //on-send이벤트를 통해 부모의 user를 보내겠다.
+                    },
+                },
+            });
+
+            const app5 = new Vue({
+                el: '#app5',
+                data: {
+                    user_name: '홍길동',
+                },
+                methods: {
+                    receive: function (param) {
+                        console.log(`자식 컴포넌트가 보낸 데이터: ${param}`);
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>

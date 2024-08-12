@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ch03-1_float.html</title>
+        <style>
+            .clearfix::after {
+                content: '';
+                display: table;
+                clear: both; /* clear both로도 충분한 경우가 많으나 안되는 경우가 있어서 display:table까지 해줌 */
+            }
+            .floating {
+                /*::after  */
+                float: left;
+                border: 1px solid #ddd;
+                /* content: '|'; */
+            }
+            .floating1 {
+                float: left;
+                border: 1px solid #ddd;
+                margin: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <h3>float</h3>
+        <img src="images/avatar2.png" alt="" style="width: 150px; height: 150px; float: left" />
+        <div class="clearfix">float은 '띄우다'라는 의미가 있습니다.</div>
+
+        <h3>float div</h3>
+        <div class="clearfix">
+            <!-- div[class="floating"]{플로팅 레이아웃}*4 -->
+            <div class="floating">플로팅 레이아웃</div>
+            <div class="floating">플로팅 레이아웃</div>
+            <div class="floating">플로팅 레이아웃</div>
+            <div class="floating">플로팅 레이아웃</div>
+        </div>
+
+        <h3>float span</h3>
+        <div class="clearfix">
+            <span class="floating1">플로팅 레이아웃</span>
+            <span class="floating1">플로팅 레이아웃</span>
+            <span class="floating1">플로팅 레이아웃</span>
+            <span class="floating1">플로팅 레이아웃</span>
+        </div>
+    </body>
+</html>

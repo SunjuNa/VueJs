@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ht_02_form.html</title>
+    </head>
+    <body>
+        <!-- details -->
+        <details>
+            <summary>질문1</summary>
+            <p>오늘 점심은 뭐 먹지</p>
+        </details>
+
+        <p>
+            오늘 <mark>점심메뉴</mark><br />
+            시간 <time>12:00</time><br />
+            메뉴 만족도 <meter value="0.8">80%</meter><br />
+            <!-- 80% : 대체문자, meter markup을 못받아들이는 브라우저에서 나타난다. -->
+            자료 업로드(20%) <progress value="2" max="10"></progress><br />
+            <!-- progress: 그 비율을 계산해줌(max와 value의) -->
+            <!-- javascript로 동적으로 변하게 해서 이쁘게 만들수도 있다. -->
+        </p>
+
+        <form name="form" id="form" action="." method="post" enctype="multipart/form-data">
+            이름:
+            <!--input은 태그가 아니라 field다 -->
+            <input type="text" value="" maxlength="10" required placeholder="이름은 10자이내로 입력해주세요" /><br />
+            <!-- required = true가 =true가 생략된거임 -->
+            <!-- readonly도 마찬가지, 다만 jquery에서는 이들 attribute에 대한 true, false를 생략할 수 없다. -->
+            암호:
+            <input type="password" value="" minlength="5" maxlength="10" required /><br />
+            설명:
+            <!--maxlength:  2000자, 입력받는곳 : default글자, placeholder랑 다르게 쳐져있는 거임  -->
+            <textarea cols="80" rows="5" maxlength="2000">입력받는 곳</textarea><br />
+
+            <!-- ajax안만들어도 되니까 좋긴 하겠네 -->
+            <datalist id="locals">
+                <option value="경기">경기도</option>
+                <option value="서울">서울시</option>
+                <option value="인천">인천시</option>
+            </datalist>
+            지역 : <input type="text" list="locals" /><br />
+
+            <!-- selected로 default값을 줄 수 있다 -->
+            <select name="locals">
+                <option value="경기">경기도</option>
+                <option value="서울" selected>서울시</option>
+                <option value="인천">인천시</option>
+            </select>
+            <br />
+
+            <!-- input type의 종류와 그 속성 -->
+            나이: <input type="number" min="0" max="120" step="1" /><br />
+            <!-- 글자가 들어가지 않음을 확인할 수 있음 -->
+            <!-- step: 개월수, step은 필수가 아님 -->
+            날짜: <input type="date" min="2024-08-06" max="2024-08-13" /><br />
+            <!-- 달력을 만들 필요가 없음 굳 -->
+            이메일: <input type="email" /><br />
+            <!-- 이메일은 type을 바로 검증해주진 않음-->
+            <!-- validate가 bootstrap기능이었군... -->
+            전화번호: <input type="text" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" placeholder="123-1234-1234" /><br />
+            <!-- 전화번호는 type="tel"으로 하는걸 비추한다, 나라마다 형식이 다르기 때문이다. -->
+            <!-- [0-9]{3}-[0-9]{4}-[0-9]{4} : 0에서 9까지 3글자, 4글자, 4글자 라는 뜻임 -->
+
+            <!-- 
+            onchange: focus이동(=값입력이 완료됐다는 뜻), 즉 값입력이 완료되었는지의 여부에 의해 처리하고싶을 때 사용, 서버렉으로 보일수있으니 주의
+            onkeydown: 키보드 변화에 따라 바뀜으로, 어떤키가 눌렸는지 확인할때 사용
+            oninput: value가 바뀌면 사용함, 서버에 무리를 주므로 주의
+            -->
+            범위: <input type="range" min="0" max="100" step="5.5" onchange="console.log(this.value)" /> <br />
+            <!-- 여기서 this는 event -->
+            <!-- 범위: <input type="range" min="0" max="100" step="5.5" oninput="console.log(this.value)" /> <br /> -->
+            <!-- oninput : 라이브로 값이 바뀜을 확인할 수 있다. -->
+
+            <!-- checkbox : 후자의 방법을 더 추천한다 -->
+            <!-- checkbox는 name이 같으면 배열로 보내버림  -->
+            <input type="checkbox" name="취미" value="등산" id="a" checked /><label for="a">등산</label>
+            <label><input type="checkbox" name="취미" value="독서" id="b" checked />독서</label><br />
+
+            <!-- radio -->
+            <input type="radio" name="선택" value="예" id="c" checked /><label for="a">예</label>
+            <label><input type="radio" name="선택" value="아니오" id="d" checked />아니오</label><br />
+
+            <!-- form에서 enctype을 설정해야함 -->
+            <!-- 애초에 데이터를 보내려면 encoding이 필요하니까... -->
+            <!-- enctype은 urlencoded/ multipart/ text의 종류가 있는데  -->
+            <input type="hidden" name="idx" value="" />
+            <input type="file" name="file" /><br />
+
+            <button type="submit">보내기</button>
+        </form>
+        <a href="ht_01_basic.html" target="_blank">베이직</a><br />
+        <!-- a링크 href에 zip파일을 올려두면 다운로드됨 -->
+        <!-- html파일도 다운로드하고 싶다면 다음과 같이 쓴다. html_예제.html는 다운로드받을때 기본 이름이다. -->
+        <!-- 다만 이 태그의 경우 ie에서는 안된다.  -->
+        <a href="ht_01_basic.html" download="html_예제.html">베이직</a>
+        <!-- 이같은 로직으로 자료실을 만들 수 있다. 하지만 보안에 문제가 있을 수 있으므로.... -->
+    </body>
+</html>

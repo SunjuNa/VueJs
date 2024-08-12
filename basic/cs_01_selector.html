@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>cs_01_selector.html</title>
+        <style>
+            @import url('style.css') screen and (min-width: 200px) and (max-width: 400px);
+            /* import - css를 상속 구조로 적용 가능 */
+            /* screen대신 print를 쓰면 출력 어쩌구 가능 */
+            @media screen and (min-width: 200px) and (max-width: 400px) {
+                #media_query {
+                    color: blue;
+                    font-weight: bold;
+                }
+            }
+            /* 기본 선택자 - 우선순위에서 우위에 있다.(세기: tag<class<id) */
+            .class01 {
+                background-color: silver;
+            }
+            #fruit {
+                background-color: transparent;
+            }
+            /* 복합 선택자 - 우선순위가 낮은편이다. */
+            ul li {
+                /* 자손이라한다 */
+                color: blue;
+            }
+            ul > li {
+                /* 자식이라한다 */
+                background-color: pink;
+            }
+            li#기준 ~ li {
+                /* 바로 뒤 형제"들" */
+                color: red;
+            }
+            li#기준 + li {
+                /* 바로 뒤 형제 */
+                color: yellow;
+            }
+            /* 속성 선택자 */
+            li[title] {
+                color: orange;
+            } /* 속성이 존재하면 */
+            li[title='할인'] {
+                color: red;
+            } /* 속성값이 같다면 */
+            li[title~='무료배송']::after {
+                content: '[무료배송]';
+            } /* ~=: 공백으로 분리된 속성(무료배송)값이 같다면 */
+            li[title$='품절'] {
+                color: gray;
+            } /* $=: 품절로 끝나면(속성값으로 끝나면) */
+            li[title^='hot'] {
+                color: red;
+                font-weight: bold;
+            } /* $=: 속성값으로 시작한다면 */
+            li[title*='무료'] {
+                text-decoration: underline;
+            } /* *=: 무료라는 단어가 들어가면(속성값으로 포함된다면) */
+            li[title~='할인'][title~='무료배송'] {
+                color: black;
+            } /* and조건 */
+            li[title~='할인'],
+            [title~='무료배송'] {
+                color: black;
+            } /* or조건 */
+            /* 가상 선택자 */
+            #fruit > ol > li:nth-child(2n) {
+                background-color: lime;
+            }
+            #fruit > ol > li:hover {
+                text-decoration: underline;
+            }
+            h1 {
+                font-style: italic;
+            }
+        </style>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    </head>
+    <body>
+        <h3 id="media_query">Media Query</h3>
+        <ul>
+            <li>요소1</li>
+            <li class="class01">요소2</li>
+            <li class="class01" id="기준">요소3</li>
+            <li>요소4</li>
+            <li id="fruit">
+                요소5
+                <!-- ol>li[title=""]*6-->
+                <ol>
+                    <li title="">사과</li>
+                    <li title="할인 품절">배</li>
+                    <li title="할인 무료배송">바나나</li>
+                    <!--마우스를 데면 title값이 바로 나옴-->
+                    <li title="무료배송 품절">수박</li>
+                    <li title="hot 무료배송">복숭아</li>
+                    <li><a href="#" target="_blank" data-url="">외부쇼핑</a></li>
+                </ol>
+            </li>
+            <li>요소6</li>
+        </ul>
+        <h1>Header</h1>
+
+        <script>
+            $(' li[title$="품절"]').on('click', function () {
+                alert('품절입니다');
+            });
+
+            document.querySelector('li[title$="품절"]').addEventListener('click', function () {
+                alert('품절입니다');
+            });
+
+            $('h1').on('click', function () {
+                /* dom+ cssom한 후에 render tree가 되기 때문에 css는 요소가 추가 된 후에 적용된다. */
+                $('body').append('<h1>header</h1>');
+            });
+        </script>
+    </body>
+</html>

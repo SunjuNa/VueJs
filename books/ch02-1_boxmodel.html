@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ch02-1_boxmodel.html</title>
+        <style>
+            div:nth-child(2) {
+                /* body의 자식중에 2번째, div이면 적용해라.... */
+                width: 100px;
+                height: 100px;
+                padding: 20px;
+                border: 1px solid black;
+            }
+            div:nth-child(3) {
+                width: 100px;
+                height: 100px;
+                padding: 20px;
+                border: 1px solid black;
+                box-sizing: border-box;
+            }
+            div:nth-child(5) {
+                width: 100px;
+                height: 100px;
+                padding: 20px;
+                border: 1px solid black;
+                box-sizing: content-box; /*content의 size가 100x100이 됨 */
+            }
+        </style>
+    </head>
+    <body>
+        <h3>Box Model</h3>
+        <div>Box1</div>
+        <div>Box2</div>
+        <p>Box3</p>
+        <div>Box4</div>
+    </body>
+</html>
