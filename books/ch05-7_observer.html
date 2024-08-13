@@ -15,6 +15,10 @@
             <p><input type="text" v-model="message" /></p>
 
             <p>이메일: "{{email_address}}, {{email_host}}, {{email}}"</p>
+
+            <h3>watch속성</h3>
+            <p>질문을 해보세요 <input type="text" v-model="question" /></p>
+            <p>{{answer}}</p>
         </div>
         <script>
             const app = new Vue({
@@ -23,10 +27,13 @@
                     message: '안녕하세요.',
                     email_host: 'naver.com',
                     email_address: 'abcd',
+                    question: '',
+                    answer: '질문을 하시기 전까지는 답변할 수 없습니다.',
                 },
                 // 데이터 원본을 사용하는게 불편하므로 사용하는게 computed속성
+                //또는 view와 model사이의 데이터에 알고리즘을 넣고싶을때 computed속성을 사용한다.(binding을 할 수 있기 때문이다.)cf) bind할수있는것: v-bind, v-model, computed...
                 computed: {
-                    //getter property
+                    //getter property: binding
                     reversedMessage: function () {
                         return this.message.split('').reverse().join('');
                     },
@@ -42,10 +49,27 @@
                         },
                     },
                 },
-
+                watch: {
+                    //question이 변경될때마다 getAnswer가 변경돼야함
+                    //관찰할 모델을 지정하여 모델이 변경되면 처리할 내용을 지정(hook랑 비슷)
+                    //ajax등으로 자동으로 데이터가 변경하는 경우 -> event를 쓸 수 없기 때문에
+                    //watch를 쓴다.(그 찰나...)
+                    question: function (newVal, oldVal) {
+                        this.answer = '입력을 기다리는 중...';
+                        console.log(newVal, oldVal);
+                        this.getAnswer();
+                    },
+                },
                 methods: {
                     reverseMessage2: function () {
                         return this.message.split('').reverse().join('');
+                    },
+                    getAnswer: function () {
+                        this.answer = '기다리세요';
+                        setTimeout(() => {
+                            //서버가 없어서 이렇게 함
+                            this.answer = this.question ? '답변입니다' : '질문을 하시기 전까지는 답변할 수 없습니다.';
+                        }, 1000);
                     },
                 },
             });
