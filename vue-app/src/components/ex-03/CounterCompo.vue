@@ -18,13 +18,16 @@
         </div>
 
         <!-- 공용저장 : reactive-store -->
-        <!-- 여러명이 작업할때 reactive-store는 상태 관리가 쉽지 않으므로 VueX를 쓰게 된다. -->
+        <!-- 항상 메소드로 하는게 좋다(side effect때문에) -->
         <div>
             <button @click="store.decrement()">-</button>
             <span>Count:{{ store.count }}</span>
             <button @click="store.increment()">+</button>
         </div>
 
+        <!-- 여러명이 작업할때 reactive-store는 상태 관리가 쉽지 않으므로 VueX를 쓰게 된다. -->
+        <!-- vuex -->
+        <!-- vuex는 Login은 필수(여러군데에서 사용되니까) -->
         <div>
             <button @click="decrement">-</button>
             <span>Count:{{ countx }}</span>

@@ -9,6 +9,8 @@
         <CounterCompo />
         <hr />
         <VueRouter />
+        <hr />
+        <VueSlot />
     </div>
 </template>
 
@@ -18,6 +20,7 @@ import VueIntro from './components/ex-01/VueIntro.vue';
 import VueCompo from './components/ex-02/VueCompo.vue';
 import CounterCompo from './components/ex-03/CounterCompo.vue';
 import VueRouter from './components/ex-04/VueRouter';
+import VueSlot from './components/ex-05/VueSlot.vue';
 
 export default {
     name: 'App',
@@ -27,6 +30,7 @@ export default {
         VueCompo,
         CounterCompo,
         VueRouter,
+        VueSlot,
     },
 };
 </script>
